@@ -45,16 +45,23 @@ class MapViewController: UIViewController,GMSMapViewDelegate {
         self.view = mapView
         
         
-        var marker = GMSMarker()
-        marker.position = CLLocationCoordinate2DMake(41.8760, -87.6266)
-        marker.title = "Chicago"
-        marker.snippet = "American"
-        marker.map = mapView
+//        var marker = GMSMarker()
+////        marker.position = CLLocationCoordinate2DMake(41.8760, -87.6266)
+//        marker.title = "Chicago"
+//        marker.snippet = "American"
+//        marker.map = mapView
     }
     
     // MARK: GMSMapViewDelegate
     
     func mapView(mapView: GMSMapView!, didTapAtCoordinate coordinate: CLLocationCoordinate2D) {
         NSLog("You tapped at %f,%f", coordinate.latitude, coordinate.longitude)
+        var marker = GMSMarker()
+        mapView.clear()
+        marker.position = CLLocationCoordinate2DMake(coordinate.latitude, coordinate.longitude)
+        marker.title = "Your location"
+//        marker.snippet = "American"
+        marker.map = mapView
+        
     }
 }
