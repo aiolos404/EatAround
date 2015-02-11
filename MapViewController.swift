@@ -46,7 +46,7 @@ class MapViewController: UIViewController,GMSMapViewDelegate {
         
         
         var marker = GMSMarker()
-        marker.position = CLLocationCoordinate2DMake(-33.86, 151.20)
+        marker.position = CLLocationCoordinate2DMake(41.8760, -87.6266)
         marker.title = "Chicago"
         marker.snippet = "American"
         marker.map = mapView
