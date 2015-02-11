@@ -41,7 +41,9 @@ class MapViewController: UIViewController,GMSMapViewDelegate {
         
         mapView.myLocationEnabled = true
         mapView.mapType = kGMSTypeHybrid
-        
+        mapView.settings.compassButton = true
+        mapView.settings.myLocationButton = true
+//        mapView.settings.scrollGestures = false
         self.view = mapView
         
         
@@ -60,8 +62,17 @@ class MapViewController: UIViewController,GMSMapViewDelegate {
         mapView.clear()
         marker.position = CLLocationCoordinate2DMake(coordinate.latitude, coordinate.longitude)
         marker.title = "Your location"
-//        marker.snippet = "American"
+        marker.snippet = "Chicago"
+        marker.infoWindowAnchor = CGPointMake(0.5, 0.5)
+        marker.icon = UIImage(named: "house")
         marker.map = mapView
         
     }
+    
+//    
+//    func mapView(mapView: GMSMapView!, willMove gesture: Bool) {
+//        mapView.clear()
+//    }
+    
+    
 }
