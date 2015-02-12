@@ -59,13 +59,17 @@ class MapViewController: UIViewController,GMSMapViewDelegate {
     func mapView(mapView: GMSMapView!, didTapAtCoordinate coordinate: CLLocationCoordinate2D) {
         NSLog("You tapped at %f,%f", coordinate.latitude, coordinate.longitude)
         var marker = GMSMarker()
+        var currentZoom = mapView.camera.zoom;
         mapView.clear()
         marker.position = CLLocationCoordinate2DMake(coordinate.latitude, coordinate.longitude)
         marker.title = "Your location"
         marker.snippet = "Chicago"
         marker.infoWindowAnchor = CGPointMake(0.5, 0.5)
         marker.icon = UIImage(named: "house")
-        marker.map = mapView
+        marker.map = mapView   
+        var movePosition = GMSCameraPosition.cameraWithLatitude(coordinate.latitude,
+            longitude: coordinate.longitude, zoom: currentZoom)
+        mapView.camera = movePosition
         
     }
     
