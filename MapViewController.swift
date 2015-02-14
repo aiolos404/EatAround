@@ -8,75 +8,75 @@
 
 import UIKit
 
-class MapViewController: UIViewController,GMSMapViewDelegate {
+class MapViewController: UIViewController,GMSMapViewDelegate,CLLocationManagerDelegate {
+    
+    
+    let locationManager =  CLLocationManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//        var camera = GMSCameraPosition.cameraWithLatitude(-33.86, longitude: 151.20, zoom: 6)
-//        var mapView = GMSMapView.mapWithFrame(CGRectZero, camera: camera)
-//        mapView.myLocationEnabled = true
-//        mapView.mapType = kGMSTypeHybrid
-//        
-////        var mapInsets = UIEdgeInsetsMake(300.0,300.0, 300.0, 300.0)
-////        mapView.padding = mapInsets
-////        
-//        
-//        self.view = mapView
-//        
-//        var marker = GMSMarker()
-//        marker.position = CLLocationCoordinate2DMake(-33.86, 151.20)
-//        marker.title = "Chicago"
-//        marker.snippet = "American"
-//        marker.map = mapView
-    }
-    
-    
-    override func loadView() {
+        
+        self.locationManager.requestAlwaysAuthorization()
+        
+        // For use in foreground
+        self.locationManager.requestWhenInUseAuthorization()
+        
+        if CLLocationManager.locationServicesEnabled() {
+            locationManager.delegate = self
+            locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+            locationManager.startUpdatingLocation()
+        }
+        
+        
         var camera = GMSCameraPosition.cameraWithLatitude(41.8760,
             longitude:-87.6266, zoom:11)
         var mapView = GMSMapView.mapWithFrame(CGRectZero, camera:camera)
-       
+        
         mapView.delegate = self
         
         mapView.myLocationEnabled = true
         mapView.mapType = kGMSTypeHybrid
         mapView.settings.compassButton = true
         mapView.settings.myLocationButton = true
-//        mapView.settings.scrollGestures = false
+        //        mapView.settings.scrollGestures = false
         self.view = mapView
-        
-        
-//        var marker = GMSMarker()
-////        marker.position = CLLocationCoordinate2DMake(41.8760, -87.6266)
-//        marker.title = "Chicago"
-//        marker.snippet = "American"
-//        marker.map = mapView
     }
+    
     
     // MARK: GMSMapViewDelegate
     
-    func mapView(mapView: GMSMapView!, didTapAtCoordinate coordinate: CLLocationCoordinate2D) {
-        NSLog("You tapped at %f,%f", coordinate.latitude, coordinate.longitude)
-        var marker = GMSMarker()
-        var currentZoom = mapView.camera.zoom;
-        mapView.clear()
-        marker.position = CLLocationCoordinate2DMake(coordinate.latitude, coordinate.longitude)
-        marker.title = "Your location"
-        marker.snippet = "Chicago"
-        marker.infoWindowAnchor = CGPointMake(0.5, 0.5)
-        marker.icon = UIImage(named: "house")
-        marker.map = mapView   
-        var movePosition = GMSCameraPosition.cameraWithLatitude(coordinate.latitude,
-            longitude: coordinate.longitude, zoom: currentZoom)
-        mapView.camera = movePosition
-        
-    }
-    
-//    
-//    func mapView(mapView: GMSMapView!, willMove gesture: Bool) {
+//    func mapView(mapView: GMSMapView!, didTapAtCoordinate coordinate: CLLocationCoordinate2D) {
+//        NSLog("You tapped at %f,%f", coordinate.latitude, coordinate.longitude)
+//        var marker = GMSMarker()
+//        var currentZoom = mapView.camera.zoom;
 //        mapView.clear()
+//        marker.position = CLLocationCoordinate2DMake(coordinate.latitude, coordinate.longitude)
+//        marker.title = "Your location"
+//        marker.snippet = "Chicago"
+//        marker.infoWindowAnchor = CGPointMake(0.5, 0.5)
+//        marker.icon = UIImage(named: "house")
+//        marker.map = mapView
+//        var movePosition = GMSCameraPosition.cameraWithLatitude(coordinate.latitude,
+//            longitude: coordinate.longitude, zoom: currentZoom)
+//        mapView.camera = movePosition
+//        
+//    }
+//    
+//    func locationManager(manager:CLLocationManager!, didChangeAuthorizationStatus status: CLAuthorizationStatus){
+//        if status == .AuthorizedWhenInUse{
+//            
+//            locationManager.startUpdatingLocation()
+//
+//        }
 //    }
     
+    
+
+    
+    func didTapMyLocationButtonForMapView(mapView: GMSMapView!) -> Bool {
+        NSLog("You tapped at location button")
+        return false
+    }
     
 }
