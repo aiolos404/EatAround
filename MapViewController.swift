@@ -44,7 +44,7 @@ class MapViewController: UIViewController,GMSMapViewDelegate,CLLocationManagerDe
     }
     
     
-    // MARK: GMSMapViewDelegate
+
     
 //    func mapView(mapView: GMSMapView!, didTapAtCoordinate coordinate: CLLocationCoordinate2D) {
 //        NSLog("You tapped at %f,%f", coordinate.latitude, coordinate.longitude)
