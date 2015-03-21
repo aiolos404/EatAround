@@ -8,10 +8,12 @@
 
 import UIKit
 
-class MapViewController: UIViewController,GMSMapViewDelegate,CLLocationManagerDelegate {
+class MapViewController: UIViewController,GMSMapViewDelegate,CLLocationManagerDelegate，TypesTableViewControllerDelegate {
     
+     @IBOutlet weak var mapView: GMSMapView!
     
     let locationManager =  CLLocationManager()
+    let dataProvider = GoogleDataProvider()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,30 +48,30 @@ class MapViewController: UIViewController,GMSMapViewDelegate,CLLocationManagerDe
     
 
     
-//    func mapView(mapView: GMSMapView!, didTapAtCoordinate coordinate: CLLocationCoordinate2D) {
-//        NSLog("You tapped at %f,%f", coordinate.latitude, coordinate.longitude)
-//        var marker = GMSMarker()
-//        var currentZoom = mapView.camera.zoom;
-//        mapView.clear()
-//        marker.position = CLLocationCoordinate2DMake(coordinate.latitude, coordinate.longitude)
-//        marker.title = "Your location"
-//        marker.snippet = "Chicago"
-//        marker.infoWindowAnchor = CGPointMake(0.5, 0.5)
-//        marker.icon = UIImage(named: "house")
-//        marker.map = mapView
-//        var movePosition = GMSCameraPosition.cameraWithLatitude(coordinate.latitude,
-//            longitude: coordinate.longitude, zoom: currentZoom)
-//        mapView.camera = movePosition
-//        
-//    }
-//    
-//    func locationManager(manager:CLLocationManager!, didChangeAuthorizationStatus status: CLAuthorizationStatus){
-//        if status == .AuthorizedWhenInUse{
-//            
-//            locationManager.startUpdatingLocation()
-//
-//        }
-//    }
+    func mapView(mapView: GMSMapView!, didTapAtCoordinate coordinate: CLLocationCoordinate2D) {
+        NSLog("You tapped at %f,%f", coordinate.latitude, coordinate.longitude)
+        var marker = GMSMarker()
+        var currentZoom = mapView.camera.zoom;
+        mapView.clear()
+        marker.position = CLLocationCoordinate2DMake(coordinate.latitude, coordinate.longitude)
+        marker.title = "Your location"
+        marker.snippet = "Chicago"
+        marker.infoWindowAnchor = CGPointMake(0.5, 0.5)
+        marker.icon = UIImage(named: "house")
+        marker.map = mapView
+        var movePosition = GMSCameraPosition.cameraWithLatitude(coordinate.latitude,
+            longitude: coordinate.longitude, zoom: currentZoom)
+        mapView.camera = movePosition
+        
+    }
+    
+    func locationManager(manager:CLLocationManager!, didChangeAuthorizationStatus status: CLAuthorizationStatus){
+        if status == .AuthorizedWhenInUse{
+            
+            locationManager.startUpdatingLocation()
+
+        }
+    }
     
     
 
@@ -77,6 +79,20 @@ class MapViewController: UIViewController,GMSMapViewDelegate,CLLocationManagerDe
     func didTapMyLocationButtonForMapView(mapView: GMSMapView!) -> Bool {
         NSLog("You tapped at location button")
         return false
+    }
+    
+    func fetchNearbyPlaces(coordinate: CLLocationCoordinate2D) {
+        // 1
+        mapView.clear()
+        // 2
+        dataProvider.fetchPlacesNearCoordinate(coordinate, radius:mapRadius, types: searchedTypes) { places in
+            for place: GooglePlace in places {
+                // 3
+                let marker = PlaceMarker(place: place)
+                // 4
+                marker.map = self.mapView
+            }
+        }
     }
     
 }
